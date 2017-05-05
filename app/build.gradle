@@ -1,21 +1,55 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.butterknife'
 
+def calendar = Calendar.getInstance();
+def version = String.format("%d%02d%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+def time = String.format("%d%02d%02d%d%d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
+def name = time + "build";
 android {
+
+    signingConfigs {
+        release {
+            keyAlias 'cloundmusic'
+            keyPassword '123456'
+            storeFile file("cloudmusic.keystore")
+            storePassword '123456'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.adou.cloudmusic"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode Integer.parseInt(version)
+        versionName name
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            zipAlignEnabled false
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
         release {
+            zipAlignEnabled true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+    productFlavors {
+        //多版本构建
+        cloudMusic {
+            applicationId "com.adou.cloudmusic"
+            versionCode Integer.parseInt(version)
+            versionName "1.0.0"
+        }
+
+    }
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(output.outputFile.parent, variant.name + "_" + variant.versionName + "_" + variant.versionCode + ".apk");
         }
     }
 }
@@ -30,4 +64,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.0'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 }
