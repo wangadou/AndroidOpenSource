@@ -1,17 +1,17 @@
-package com.adou.cloudmusic.utils;
+package com.wwb.library.utils;
 
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.adou.cloudmusic.app.App;
+import com.wwb.library.Library;
 
 /**
  * toast显示类，可以在子线程直接调用
  * 
  */
-public class SDToast
+public class ToastUtil
 {
 	private static Toast toast;
 
@@ -50,7 +50,7 @@ public class SDToast
 		{
 			toast.cancel();
 		}
-		toast = Toast.makeText(App.getContext(), text, duration);
+		toast = Toast.makeText(Library.getInstance().getApplication(), text, duration);
 		toast.show();
 	}
 
