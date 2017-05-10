@@ -1,18 +1,9 @@
-<manifest package="com.wwb.library"
-          xmlns:android="http://schemas.android.com/apk/res/android"
->
-
-    <application android:allowBackup="true"
-                 android:label="@string/app_name"
-                 android:supportsRtl="true"/>
-
-
-</manifest>
-
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dd.library"
-    android:versionCode="1"
-    android:versionName="1.0" >
+<manifest package="com.dd.library"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          android:allowBackup="true"
+          android:supportsRtl="true"
+          android:versionCode="1"
+          android:versionName="1.0">
 
 </manifest>
