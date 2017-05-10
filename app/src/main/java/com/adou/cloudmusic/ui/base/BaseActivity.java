@@ -8,6 +8,8 @@ import com.wwb.library.activity.DDBaseActivity;
 
 public abstract class BaseActivity extends DDBaseActivity {
 
+
+
     @Override
     protected int onCreateContentView() {
         return super.onCreateContentView();
