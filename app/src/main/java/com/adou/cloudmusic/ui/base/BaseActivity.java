@@ -6,12 +6,10 @@ import com.wwb.library.activity.DDBaseActivity;
  * Created by adou on 2017/5/9.
  */
 
-public abstract class BaseActivity extends DDBaseActivity
-{
+public abstract class BaseActivity extends DDBaseActivity {
 
     @Override
-    protected int onCreateContentView()
-    {
+    protected int onCreateContentView() {
         return super.onCreateContentView();
     }
 

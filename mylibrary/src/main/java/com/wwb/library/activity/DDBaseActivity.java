@@ -14,28 +14,31 @@ import com.wwb.library.manager.DDActivityManager;
  * Created by adou on 2017/5/9.
  */
 
-public class DDBaseActivity extends AppCompatActivity implements View.OnClickListener, SDEventObserver
-{
+public class DDBaseActivity extends AppCompatActivity implements View.OnClickListener, SDEventObserver {
     protected DDBaseActivity mActivity;
+    boolean isOpenEventBus;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState)
-    {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = this;
-        SDEventManager.register(this);
+        if (isOpenEventBus) {
+            SDEventManager.register(this);
+        }
         DDActivityManager.getInstance().onCreate(this);
         afterOnCreater(savedInstanceState);
     }
 
-    private void afterOnCreater(Bundle savedInstanceState)
-    {
+    private void afterOnCreater(Bundle savedInstanceState) {
         int layoutId = onCreateContentView();
-        if (layoutId != 0)
-        {
+        if (layoutId != 0) {
             setContentView(layoutId);
         }
         init(savedInstanceState);
+    }
+
+    public void setOpenEventBus(boolean openEventBus) {
+        isOpenEventBus = openEventBus;
     }
 
     /**
@@ -43,64 +46,54 @@ public class DDBaseActivity extends AppCompatActivity implements View.OnClickLis
      *
      * @return
      */
-    protected int onCreateContentView()
-    {
+    protected int onCreateContentView() {
         return 0;
     }
 
-    protected void init(Bundle savedInstanceState)
-    {
+    protected void init(Bundle savedInstanceState) {
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         DDActivityManager.getInstance().onResume(this);
         super.onResume();
     }
 
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         SDEventManager.unregister(this);
         DDActivityManager.getInstance().onDestroy(this);
         super.onDestroy();
     }
 
     @Override
-    public void finish()
-    {
+    public void finish() {
         DDActivityManager.getInstance().onDestroy(this);
         super.finish();
     }
 
     @Override
-    public void onClick(View view)
-    {
+    public void onClick(View view) {
 
     }
 
     @Override
-    public void onEvent(SDBaseEvent sdBaseEvent)
-    {
+    public void onEvent(SDBaseEvent sdBaseEvent) {
 
     }
 
     @Override
-    public void onEventMainThread(SDBaseEvent sdBaseEvent)
-    {
+    public void onEventMainThread(SDBaseEvent sdBaseEvent) {
 
     }
 
     @Override
-    public void onEventBackgroundThread(SDBaseEvent sdBaseEvent)
-    {
+    public void onEventBackgroundThread(SDBaseEvent sdBaseEvent) {
 
     }
 
     @Override
-    public void onEventAsync(SDBaseEvent sdBaseEvent)
-    {
+    public void onEventAsync(SDBaseEvent sdBaseEvent) {
 
     }
 }
