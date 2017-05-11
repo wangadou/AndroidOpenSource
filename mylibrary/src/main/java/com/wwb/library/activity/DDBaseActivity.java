@@ -3,41 +3,51 @@ package com.wwb.library.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.sunday.eventbus.SDBaseEvent;
 import com.sunday.eventbus.SDEventManager;
 import com.sunday.eventbus.SDEventObserver;
 import com.wwb.library.manager.DDActivityManager;
+import com.wwb.library.utils.DDCollectionUtil;
+
+import java.util.List;
 
 /**
  * Created by adou on 2017/5/9.
  */
 
-public class DDBaseActivity extends AppCompatActivity implements View.OnClickListener, SDEventObserver {
+public class DDBaseActivity extends AppCompatActivity implements View.OnClickListener, SDEventObserver
+{
     protected DDBaseActivity mActivity;
     boolean isOpenEventBus;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         mActivity = this;
-        if (isOpenEventBus) {
-            SDEventManager.register(this);
-        }
         DDActivityManager.getInstance().onCreate(this);
         afterOnCreater(savedInstanceState);
+        if (isOpenEventBus)
+        {
+            SDEventManager.register(this);
+        }
     }
 
-    private void afterOnCreater(Bundle savedInstanceState) {
+    private void afterOnCreater(Bundle savedInstanceState)
+    {
         int layoutId = onCreateContentView();
-        if (layoutId != 0) {
+        if (layoutId != 0)
+        {
             setContentView(layoutId);
         }
-        init(savedInstanceState);
+        baseInit(savedInstanceState);
     }
 
-    public void setOpenEventBus(boolean openEventBus) {
+    public void setOpenEventBus(boolean openEventBus)
+    {
         isOpenEventBus = openEventBus;
     }
 
@@ -46,54 +56,83 @@ public class DDBaseActivity extends AppCompatActivity implements View.OnClickLis
      *
      * @return
      */
-    protected int onCreateContentView() {
+    protected int onCreateContentView()
+    {
         return 0;
     }
 
-    protected void init(Bundle savedInstanceState) {
+    protected void baseInit(Bundle savedInstanceState)
+    {
     }
 
+
+    protected <V extends View> V find(int id)
+    {
+        View view = findViewById(id);
+        return (V) view;
+    }
+
+
+    protected boolean isEmpty(CharSequence content)
+    {
+        return TextUtils.isEmpty(content);
+    }
+
+    public boolean isEmpty(List<?> list)
+    {
+        return DDCollectionUtil.isEmpty(list);
+    }
+
+
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         DDActivityManager.getInstance().onResume(this);
         super.onResume();
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onDestroy()
+    {
         SDEventManager.unregister(this);
         DDActivityManager.getInstance().onDestroy(this);
         super.onDestroy();
     }
 
     @Override
-    public void finish() {
+    public void finish()
+    {
         DDActivityManager.getInstance().onDestroy(this);
         super.finish();
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(View view)
+    {
 
     }
 
     @Override
-    public void onEvent(SDBaseEvent sdBaseEvent) {
+    public void onEvent(SDBaseEvent sdBaseEvent)
+    {
 
     }
 
     @Override
-    public void onEventMainThread(SDBaseEvent sdBaseEvent) {
+    public void onEventMainThread(SDBaseEvent sdBaseEvent)
+    {
 
     }
 
     @Override
-    public void onEventBackgroundThread(SDBaseEvent sdBaseEvent) {
+    public void onEventBackgroundThread(SDBaseEvent sdBaseEvent)
+    {
 
     }
 
     @Override
-    public void onEventAsync(SDBaseEvent sdBaseEvent) {
+    public void onEventAsync(SDBaseEvent sdBaseEvent)
+    {
 
     }
 }
