@@ -17,6 +17,8 @@ import com.wwb.library.utils.DDViewUtil;
 
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
+
 /**
  * Created by adou on 2017/5/9.
  */
@@ -25,7 +27,6 @@ public class DDBaseActivity extends AppCompatActivity implements View.OnClickLis
 {
     private FrameLayout flRootLayout;
     protected DDBaseActivity mActivity;
-    boolean isOpenEventBus;
     private DDFragmentManager fragmentManager;
 
 
@@ -37,7 +38,7 @@ public class DDBaseActivity extends AppCompatActivity implements View.OnClickLis
         flRootLayout = (FrameLayout) findViewById(android.R.id.content);
         DDActivityManager.getInstance().onCreate(this);
         afterOnCreater(savedInstanceState);
-        if (isOpenEventBus)
+        if (isOpenEventBus())
         {
             SDEventManager.register(this);
         }
@@ -53,9 +54,15 @@ public class DDBaseActivity extends AppCompatActivity implements View.OnClickLis
         baseInit(savedInstanceState);
     }
 
-    public void setOpenEventBus(boolean openEventBus)
+
+    /**
+     * @date 2017/5/13
+     * @author wwb
+     * @Description 需要注册是时候重写下，默认不开启
+     */
+    protected boolean isOpenEventBus()
     {
-        isOpenEventBus = openEventBus;
+        return false;
     }
 
     /**
@@ -110,6 +117,7 @@ public class DDBaseActivity extends AppCompatActivity implements View.OnClickLis
         DDViewUtil.addView(flRootLayout, view, params);
     }
 
+
     @Override
     protected void onResume()
     {
@@ -161,4 +169,14 @@ public class DDBaseActivity extends AppCompatActivity implements View.OnClickLis
     {
 
     }
+
+    protected void postBaseEvent(SDBaseEvent baseEvent)
+    {
+        if (baseEvent != null)
+        {
+            EventBus.getDefault().post(baseEvent);
+        }
+
+    }
+
 }
