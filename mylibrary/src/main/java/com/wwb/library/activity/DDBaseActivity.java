@@ -5,12 +5,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.sunday.eventbus.SDBaseEvent;
 import com.sunday.eventbus.SDEventManager;
 import com.sunday.eventbus.SDEventObserver;
 import com.wwb.library.manager.DDActivityManager;
+import com.wwb.library.manager.DDFragmentManager;
 import com.wwb.library.utils.DDCollectionUtil;
+import com.wwb.library.utils.DDViewUtil;
 
 import java.util.List;
 
@@ -20,14 +23,18 @@ import java.util.List;
 
 public class DDBaseActivity extends AppCompatActivity implements View.OnClickListener, SDEventObserver
 {
+    private FrameLayout flRootLayout;
     protected DDBaseActivity mActivity;
     boolean isOpenEventBus;
+    private DDFragmentManager fragmentManager;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         mActivity = this;
+        flRootLayout = (FrameLayout) findViewById(android.R.id.content);
         DDActivityManager.getInstance().onCreate(this);
         afterOnCreater(savedInstanceState);
         if (isOpenEventBus)
@@ -83,6 +90,25 @@ public class DDBaseActivity extends AppCompatActivity implements View.OnClickLis
         return DDCollectionUtil.isEmpty(list);
     }
 
+
+    public DDFragmentManager getSDFragmentManager()
+    {
+        if (fragmentManager == null)
+        {
+            fragmentManager = new DDFragmentManager(getSupportFragmentManager());
+        }
+        return fragmentManager;
+    }
+
+    public void addView(View view)
+    {
+        DDViewUtil.addView(flRootLayout, view);
+    }
+
+    public void addView(View view, FrameLayout.LayoutParams params)
+    {
+        DDViewUtil.addView(flRootLayout, view, params);
+    }
 
     @Override
     protected void onResume()
