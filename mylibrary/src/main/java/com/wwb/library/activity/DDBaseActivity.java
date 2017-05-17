@@ -17,38 +17,31 @@ import com.wwb.library.utils.DDViewUtil;
 
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
-
 /**
  * Created by adou on 2017/5/9.
  */
 
-public class DDBaseActivity extends AppCompatActivity implements View.OnClickListener, SDEventObserver
-{
+public class DDBaseActivity extends AppCompatActivity implements View.OnClickListener, SDEventObserver {
     private FrameLayout flRootLayout;
     protected DDBaseActivity mActivity;
     private DDFragmentManager fragmentManager;
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState)
-    {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = this;
         flRootLayout = (FrameLayout) findViewById(android.R.id.content);
         DDActivityManager.getInstance().onCreate(this);
         afterOnCreater(savedInstanceState);
-        if (isOpenEventBus())
-        {
+        if (isOpenEventBus()) {
             SDEventManager.register(this);
         }
     }
 
-    private void afterOnCreater(Bundle savedInstanceState)
-    {
+    private void afterOnCreater(Bundle savedInstanceState) {
         int layoutId = onCreateContentView();
-        if (layoutId != 0)
-        {
+        if (layoutId != 0) {
             setContentView(layoutId);
         }
         baseInit(savedInstanceState);
@@ -60,8 +53,7 @@ public class DDBaseActivity extends AppCompatActivity implements View.OnClickLis
      * @author wwb
      * @Description 需要注册是时候重写下，默认不开启
      */
-    protected boolean isOpenEventBus()
-    {
+    protected boolean isOpenEventBus() {
         return false;
     }
 
@@ -70,113 +62,100 @@ public class DDBaseActivity extends AppCompatActivity implements View.OnClickLis
      *
      * @return
      */
-    protected int onCreateContentView()
-    {
+    protected int onCreateContentView() {
         return 0;
     }
 
-    protected void baseInit(Bundle savedInstanceState)
-    {
+    protected void baseInit(Bundle savedInstanceState) {
     }
 
 
-    protected <V extends View> V find(int id)
-    {
+    protected <V extends View> V find(int id) {
         View view = findViewById(id);
         return (V) view;
     }
 
 
-    protected boolean isEmpty(CharSequence content)
-    {
+    protected boolean isEmpty(CharSequence content) {
         return TextUtils.isEmpty(content);
     }
 
-    public boolean isEmpty(List<?> list)
-    {
+    public boolean isEmpty(List<?> list) {
         return DDCollectionUtil.isEmpty(list);
     }
 
 
-    public DDFragmentManager getSDFragmentManager()
-    {
-        if (fragmentManager == null)
-        {
+    public DDFragmentManager getSDFragmentManager() {
+        if (fragmentManager == null) {
             fragmentManager = new DDFragmentManager(getSupportFragmentManager());
         }
         return fragmentManager;
     }
 
-    public void addView(View view)
-    {
+    public void addView(View view) {
         DDViewUtil.addView(flRootLayout, view);
     }
 
-    public void addView(View view, FrameLayout.LayoutParams params)
-    {
+    public void addView(View view, FrameLayout.LayoutParams params) {
         DDViewUtil.addView(flRootLayout, view, params);
     }
 
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         DDActivityManager.getInstance().onResume(this);
         super.onResume();
     }
 
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         SDEventManager.unregister(this);
         DDActivityManager.getInstance().onDestroy(this);
         super.onDestroy();
     }
 
     @Override
-    public void finish()
-    {
+    public void finish() {
         DDActivityManager.getInstance().onDestroy(this);
         super.finish();
     }
 
     @Override
-    public void onClick(View view)
-    {
+    public void onClick(View view) {
 
     }
 
     @Override
-    public void onEvent(SDBaseEvent sdBaseEvent)
-    {
+    public void onEvent(SDBaseEvent sdBaseEvent) {
 
     }
 
     @Override
-    public void onEventMainThread(SDBaseEvent sdBaseEvent)
-    {
+    public void onEventMainThread(SDBaseEvent sdBaseEvent) {
 
     }
 
     @Override
-    public void onEventBackgroundThread(SDBaseEvent sdBaseEvent)
-    {
+    public void onEventBackgroundThread(SDBaseEvent sdBaseEvent) {
 
     }
 
     @Override
-    public void onEventAsync(SDBaseEvent sdBaseEvent)
-    {
+    public void onEventAsync(SDBaseEvent sdBaseEvent) {
 
     }
 
-    protected void postBaseEvent(SDBaseEvent baseEvent)
-    {
-        if (baseEvent != null)
-        {
-            EventBus.getDefault().post(baseEvent);
-        }
+    protected void postBaseEvent(Object data) {
+        postBaseEvent(data, null);
+    }
 
+
+    protected void postBaseEvent(Object data, String tagString) {
+        SDEventManager.post(data, tagString);
+    }
+
+    protected void postBaseEvent(Object data, int tagInt, String tagString) {
+        SDEventManager.post(new SDBaseEvent(data, tagInt, tagString));
     }
 
 }

@@ -5,18 +5,20 @@ import android.os.Bundle;
 import com.adou.cloudmusic.R;
 import com.adou.cloudmusic.ui.base.BaseActivity;
 
-public class MainActivity extends BaseActivity
-{
+public class MainActivity extends BaseActivity {
 
     @Override
-    protected int createContentView()
-    {
+    protected int createContentView() {
         return R.layout.activity_main;
     }
 
     @Override
-    protected void init(Bundle savedInstanceState)
-    {
+    protected void init(Bundle savedInstanceState) {
 
+    }
+
+    @Override
+    protected boolean openEventBus() {
+        return false;
     }
 }

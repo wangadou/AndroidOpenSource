@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">CloudMusic</string>
+    <string name="songs">Songs</string>
+    <string name="albums">Albums</string>
+    <string name="artists">Artists</string>
+    <string name="library">Library</string>
+    <string name="playlists">Playlists</string>
+    <string name="folders">Folders</string>
+    <string name="favourate">Favourate</string>
+    <string name="recent_play">Recent Play</string>
+    <string name="recent_add">Recent Add</string>
+    <string name="settings">Settings</string>
+    <string name="exit">Exit</string>
+    <string name="search">Search</string>
+    <string name="action_equalizer">Equalizer</string>
+    <string name="search_library">Search Library</string>
+
+    <string name="play_ranking">Play Ranking</string>
 </resources>
